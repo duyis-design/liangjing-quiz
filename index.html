@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>测测你是《两京十五日》里的谁</title>
+<meta name="description" content="24 道题，12 个角色，6 分钟测出你最像《两京十五日》里的谁。">
+<meta property="og:title" content="测测你是《两京十五日》里的谁">
+<meta property="og:description" content="24 道题 · 12 个角色 · 6 分钟。凭直觉选，别装。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F6F0E4">
+<style>
+  :root{
+    --paper:#F6F0E4;
+    --paper-2:#FFFDF8;
+    --ink:#221E19;
+    --muted:#7B7266;
+    --red:#B03A2E;
+    --line:#E2D7C3;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    background-image:radial-gradient(rgba(34,30,25,.045) 1px, transparent 1px);
+    background-size:18px 18px;
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:"Songti SC","STSong","Noto Serif SC","SimSun",serif;}
+  .wrap{max-width:520px;margin:0 auto;padding:28px 22px 48px;min-height:100dvh;display:flex;flex-direction:column}
+  .screen{display:none;animation:fade .35s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- 首屏 ---------- */
+  .seal{
+    width:56px;height:56px;border:2px solid var(--red);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--red);font-size:28px;font-weight:700;
+    transform:rotate(-3deg);margin-bottom:26px;opacity:.9;
+  }
+  .eyebrow{font-size:12px;letter-spacing:.28em;color:var(--muted);margin-bottom:14px}
+  h1.title{font-size:40px;line-height:1.32;margin:0 0 18px;font-weight:700;letter-spacing:.02em}
+  h1.title em{font-style:normal;color:var(--red)}
+  .sub{font-size:15px;color:var(--muted);margin:0 0 8px}
+  .meta{font-size:13px;color:var(--muted);margin:22px 0 34px;padding-left:14px;border-left:2px solid var(--line)}
+  .btn{
+    display:block;width:100%;border:0;cursor:pointer;
+    background:var(--ink);color:#FBF6EC;
+    font-size:17px;letter-spacing:.08em;
+    padding:17px 20px;border-radius:4px;
+    font-family:inherit;transition:transform .12s ease,opacity .2s;
+  }
+  .btn:active{transform:scale(.985)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn + .btn{margin-top:12px}
+  .note{font-size:12px;color:var(--muted);text-align:center;margin:22px 0 0;opacity:.8}
+
+  /* ---------- 答题 ---------- */
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;letter-spacing:.16em;color:var(--muted);margin-bottom:10px}
+  .progress{height:2px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:34px}
+  .progress i{display:block;height:100%;background:var(--red);width:0;transition:width .35s ease}
+  .qtext{font-size:23px;line-height:1.55;margin:0 0 26px;font-weight:700;letter-spacing:.01em}
+  .opts{display:flex;flex-direction:column;gap:11px}
+  .opt{
+    display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;
+    background:var(--paper-2);border:1px solid var(--line);border-radius:6px;
+    padding:16px 16px;font-size:15.5px;line-height:1.6;color:var(--ink);
+    font-family:inherit;cursor:pointer;transition:border-color .18s,background .18s,transform .12s;
+  }
+  .opt:active{transform:scale(.99)}
+  .opt .letter{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    border:1px solid var(--line);color:var(--muted);
+    font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:3px;
+    transition:all .18s;
+  }
+  .opt.on{border-color:var(--red);background:#fff}
+  .opt.on .letter{background:var(--red);border-color:var(--red);color:#fff}
+  .qfoot{margin-top:26px;display:flex;justify-content:space-between;align-items:center}
+  .linkbtn{background:none;border:0;color:var(--muted);font-size:13px;padding:6px 0;cursor:pointer;font-family:inherit}
+  .linkbtn:disabled{opacity:.3}
+
+  /* ---------- 结果 ---------- */
+  .hero{border-left:4px solid var(--c,#B03A2E);padding:4px 0 4px 18px;margin-bottom:30px}
+  .hero .label{font-size:12px;letter-spacing:.24em;color:var(--muted);margin-bottom:8px}
+  .hero h2{font-size:44px;margin:0 0 6px;letter-spacing:.04em;line-height:1.2}
+  .stars{color:var(--red);letter-spacing:4px;font-size:15px;margin-bottom:16px}
+  .hero p{margin:0;font-size:18px;line-height:1.75;color:#33291F}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .tag{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:3px 12px;background:rgba(255,255,255,.5)}
+  .card{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:18px 18px;margin-bottom:12px}
+  .card h3{margin:0 0 8px;font-size:12px;letter-spacing:.2em;color:var(--red);font-weight:600}
+  .card p{margin:0;font-size:15px;line-height:1.75;color:#3A3027}
+  .card .pair{display:flex;gap:10px;flex-wrap:wrap}
+  .kv{display:flex;gap:8px;font-size:14px;color:#3A3027;margin-top:6px}
+  .kv b{color:var(--muted);font-weight:400;flex:0 0 auto}
+  .quote{
+    text-align:center;font-size:17px;line-height:1.8;padding:24px 12px;margin:22px 0;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .second{font-size:13px;color:var(--muted);text-align:center;margin:18px 0 26px;line-height:1.9}
+
+  /* ---------- 分享卡弹层 ---------- */
+  .modal{position:fixed;inset:0;background:rgba(24,20,16,.93);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;z-index:50}
+  .modal.on{display:flex}
+  .modal img{max-width:min(86vw,380px);max-height:66vh;border-radius:6px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+  .modal .hint{color:#EDE4D6;font-size:13px;margin-top:16px;letter-spacing:.06em}
+  .modal .row{display:flex;gap:10px;margin-top:16px;width:min(86vw,380px)}
+  .modal .row a,.modal .row button{
+    flex:1;text-align:center;text-decoration:none;font-size:14px;padding:11px 0;border-radius:4px;
+    background:#F6F0E4;color:#221E19;border:0;font-family:inherit;cursor:pointer;
+  }
+  .modal .row button{background:#1C1712;color:#EDE4D6;border:1px solid rgba(237,228,214,.35)}
+  footer{margin-top:auto;padding-top:34px;text-align:center;font-size:11px;color:var(--muted);opacity:.75;line-height:1.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ========== 首屏 ========== -->
+  <section id="s-intro" class="screen active">
+    <div class="seal serif">测</div>
+    <div class="eyebrow">《两京十五日》角色测试</div>
+    <h1 class="title serif">测测你是<br>《两京十五日》里的<em>谁</em></h1>
+    <p class="sub">24 道题 · 12 个角色 · 6 分钟</p>
+    <p class="meta">凭第一直觉选。<br>不要选"你想成为的那个"，选"你本来就是的那个"。</p>
+    <button class="btn" id="start">开始测试</button>
+    <p class="note">同人向娱乐测试 · 非官方 · 不涉及剧透</p>
+  </section>
+
+  <!-- ========== 答题 ========== -->
+  <section id="s-quiz" class="screen">
+    <div class="qhead">
+      <span id="qnum">01 / 24</span>
+      <span id="qtag">凭直觉选</span>
+    </div>
+    <div class="progress"><i id="bar"></i></div>
+    <h2 class="qtext" id="qtext"></h2>
+    <div class="opts" id="opts"></div>
+    <div class="qfoot">
+      <button class="linkbtn" id="back">← 上一题</button>
+      <span class="linkbtn" id="skipHint" style="opacity:.55">选一个就继续</span>
+    </div>
+  </section>
+
+  <!-- ========== 结果 ========== -->
+  <section id="s-result" class="screen">
+    <div class="hero" id="hero">
+      <div class="label">你的角色是</div>
+      <h2 class="serif" id="rname"></h2>
+      <div class="stars" id="rstars"></div>
+      <p id="rline"></p>
+      <div class="tags" id="rtags"></div>
+    </div>
+
+    <div class="card"><h3>你的性格</h3><p id="rpersona"></p></div>
+    <div class="card"><h3>你的高光</h3><p id="rhigh"></p></div>
+    <div class="card"><h3>你的软肋</h3><p id="rweak"></p></div>
+    <div class="card">
+      <h3>关系磁场</h3>
+      <div class="kv"><b>最合</b><span id="rbest"></span></div>
+      <div class="kv"><b>最难</b><span id="rworst"></span></div>
+    </div>
+    <div class="card"><h3>如果他在今天</h3><p id="rquote"></p></div>
+    <div class="card"><h3>现代版穿搭</h3><p id="rstyle"></p></div>
+
+    <div class="quote serif" id="rkicker"></div>
+
+    <div class="second" id="rsecond"></div>
+
+    <button class="btn" id="share">生成分享卡</button>
+    <button class="btn ghost" id="copy">复制结果文案</button>
+    <button class="btn ghost" id="again">再测一次</button>
+  </section>
+
+  <footer>
+    同人向娱乐测试，非官方，仅供性格参考<br>
+    结果没有好坏，只有像不像
+  </footer>
+</div>
+
+<!-- 分享卡 -->
+<div class="modal" id="modal">
+  <img id="cardimg" alt="分享卡">
+  <div class="hint">长按图片保存 · 或点下面下载</div>
+  <div class="row">
+    <a id="dl" download="角色测试结果.png">下载图片</a>
+    <button id="close">关闭</button>
+  </div>
+</div>
+
+<script>
+/* ================= 数据 ================= */
+var QUESTIONS = [
+ {q:"看到有人当街欺负老人，你会？",o:[
+  ["直接上前，先把人拦住","林不平"],
+  ["先看清对方几个人，再决定怎么动手","吴定缘"],
+  ["站出来讲道理，把围观的人也拉进来","于谦"],
+  ["不急着出头，先让人去报官、留证据","张皇后"]]},
+ {q:"走进一个全是陌生人的饭局，你第一件事是？",o:[
+  ["找个角落坐下，先观察谁跟谁熟","吴玉露"],
+  ["主动打招呼，很快就能聊开","朱瞻基"],
+  ["先搞清楚这桌谁说话算数","汪极"],
+  ["找个不显眼的位置，随时能走","昨叶何"]]},
+ {q:"朋友凌晨两点发消息说“我出事了”，你？",o:[
+  ["电话打过去，人已经在路上了","吴定缘"],
+  ["先问清楚在哪、到底发生了什么","吴不平"],
+  ["什么都不问，先陪着，等她说完","吴玉露"],
+  ["帮她理清楚下一步该做什么","郑和"]]},
+ {q:"接到一个从来没做过的任务，你的第一反应？",o:[
+  ["先拆解，列步骤，算时间","苏荆溪"],
+  ["先按规矩来，把该做的做到位","于谦"],
+  ["先干起来，边做边调整","朱高煦"],
+  ["先摸清楚这事的利害关系","汪极"]]},
+ {q:"被人误会了，你会？",o:[
+  ["懒得解释，做出来给你看","朱瞻基"],
+  ["当场把话说清楚，谁也别憋着","林不平"],
+  ["不辩解，自己消化","吴不平"],
+  ["冷静说明事实，说完就翻篇","苏荆溪"]]},
+ {q:"一个能赚快钱但不太干净的机会摆在面前？",o:[
+  ["先谈条件，能摘干净就做","汪极"],
+  ["不该拿的钱，一分不拿","于谦"],
+  ["看是谁给的，信得过才考虑","吴定缘"],
+  ["先想这事三年后会不会反噬","张皇后"]]},
+ {q:"突然有七天假，你会？",o:[
+  ["背个包就走，去哪都行","昨叶何"],
+  ["去一个没去过的地方，越远越好","郑和"],
+  ["把想玩的全玩一遍，行程排满","朱瞻基"],
+  ["想去，但最后还是留在家里","吴玉露"]]},
+ {q:"喜欢上一个人，你会？",o:[
+  ["对他好，但不说","吴玉露"],
+  ["不告诉他，但会一直在","昨叶何"],
+  ["直接说，喜欢就喜欢","朱瞻基"],
+  ["先观察，确认了再靠近","苏荆溪"]]},
+ {q:"真的被惹毛了，你的反应是？",o:[
+  ["当场爆发，谁怕谁","朱高煦"],
+  ["拍桌子，把话撂这儿","林不平"],
+  ["更冷，一个字都不说","苏荆溪"],
+  ["不吵，但眼神变了","吴不平"]]},
+ {q:"要做一个人生级别的决定？",o:[
+  ["先算全局，哪个损失最小","张皇后"],
+  ["想十年后回头看，会不会后悔","郑和"],
+  ["问自己对不对得起良心","于谦"],
+  ["算清楚划不划算","汪极"]]},
+ {q:"面对一个你不认同的上司？",o:[
+  ["当面说，说不动就再上书","于谦"],
+  ["表面顺着，等机会","汪极"],
+  ["以柔克刚，把事办成再说","张皇后"],
+  ["不服就顶，顶完再说","林不平"]]},
+ {q:"你心里有个不能说的秘密？",o:[
+  ["秘密就是底牌，谁也别想知道","昨叶何"],
+  ["烂在肚子里，带进土里","吴不平"],
+  ["瞒着，是怕连累别人","吴定缘"],
+  ["有些事，不必说，也不必瞒得太辛苦","郑和"]]},
+ {q:"搞砸了一件很重要的事？",o:[
+  ["不说什么，默默再做一遍","吴不平"],
+  ["愤怒，先怪别人","朱高煦"],
+  ["复盘，找到问题在哪","苏荆溪"],
+  ["难过很久，怀疑自己","吴玉露"]]},
+ {q:"一个团队里，你通常是？",o:[
+  ["那个稳住大家的人","郑和"],
+  ["那个安排谁做什么的人","张皇后"],
+  ["那个第一个冲上去的人","吴定缘"],
+  ["那个出主意、搞关系的人","汪极"]]},
+ {q:"难得的周末，你更想？",o:[
+  ["约人打球、喝酒，热闹一场","林不平"],
+  ["在家做饭、养花、收拾屋子","吴玉露"],
+  ["去一个没去过的地方转转","昨叶何"],
+  ["玩点新鲜的，越刺激越好","朱瞻基"]]},
+ {q:"你说话的方式？",o:[
+  ["直来直去，不爱绕","林不平"],
+  ["滴水不漏，不得罪人","汪极"],
+  ["一板一眼，讲究分寸","于谦"],
+  ["说一不二，有压迫感","朱高煦"]]},
+ {q:"突发危机，所有人都在看你？",o:[
+  ["先定人心，再想下一步","郑和"],
+  ["立刻决断，错了再改","张皇后"],
+  ["先冲上去，把人护住","吴定缘"],
+  ["先处理最急的那个问题","苏荆溪"]]},
+ {q:"你对“承诺”的态度？",o:[
+  ["答应了就做到，做不到不答应","吴不平"],
+  ["说到做到，得罪人也认","于谦"],
+  ["答应的事会一直记着","吴玉露"],
+  ["说的时候是真心的，但看情况","朱高煦"]]},
+ {q:"一个人待一整天，你会？",o:[
+  ["正好，清净","苏荆溪"],
+  ["习惯了，也不觉得难受","吴不平"],
+  ["待不住，想找人说话","朱瞻基"],
+  ["最自在，谁也别来找我","昨叶何"]]},
+ {q:"你想要的人生是？",o:[
+  ["见过世界，留下点什么","郑和"],
+  ["护住身边的人，一个都不少","张皇后"],
+  ["站到最高处，让所有人看见","朱高煦"],
+  ["活得痛快，不欠谁的","林不平"]]},
+ {q:"你的底线是？",o:[
+  ["良心，过不去就是过不去","于谦"],
+  ["自己人，谁动谁试试","吴定缘"],
+  ["不亏本，也不送命","汪极"],
+  ["不伤害无辜的人","吴玉露"]]},
+ {q:"什么样的人能成为你的朋友？",o:[
+  ["一起扛过事的人","吴定缘"],
+  ["合得来就行，不问出身","昨叶何"],
+  ["人品过关，慢慢处","郑和"],
+  ["聊得来，有趣就行","朱瞻基"]]},
+ {q:"你最遗憾的事是？",o:[
+  ["有些话，没能早点说","张皇后"],
+  ["没能护住某个人","吴不平"],
+  ["太晚才懂事","朱瞻基"],
+  ["差一步，就差那一步","朱高煦"]]},
+ {q:"别人最常说你？",o:[
+  ["看不透，有点神秘","昨叶何"],
+  ["太冷静，不好接近","苏荆溪"],
+  ["太直，藏不住话","林不平"],
+  ["气场强，不好惹","朱高煦"]]}
+];
+
+var CHARS = {
+ "朱瞻基":{line:"你不是没长大，你是在硬着头皮长大。",tags:["少年气","担当","不服输"],stars:4,
+  persona:"有天然的贵气，也有没磨掉的少年气。爱玩、好奇、嘴硬，但真到要扛事的时候，你不会跑。",
+  high:"所有人都在慌的时候，你能站出来说“跟我走”。",
+  weak:"太想证明自己，容易冲动；也容易被“应该”两个字绑住。",
+  best:"于谦、吴定缘",worst:"朱高煦",
+  quote:"「这事，我来。」",style:"白衬衫 + 深色西装外套 + 一双干净的球鞋。",color:"#C19A3F"},
+ "吴定缘":{line:"你嘴上什么都无所谓，心里谁都放不下。",tags:["义气","街头智慧","嘴硬"],stars:4,
+  persona:"街头长大，看人准，反应快。嘴上贫，手上有数。看着没正形，其实最讲义气。",
+  high:"别人还在犹豫，你已经把事办了。",
+  weak:"不肯示弱，疼也说自己没事。",
+  best:"苏荆溪、吴玉露",worst:"汪极",
+  quote:"「行，这事儿我管了。」",style:"旧牛仔 + 皮夹克 + 工装靴。",color:"#4A6D8C"},
+ "苏荆溪":{line:"你不是冷，你只是把情绪收得很好。",tags:["理性","专业","克制"],stars:5,
+  persona:"理性、专业、边界感强。别人靠感觉，你靠判断。你不是没有情绪，是不轻易给人看。",
+  high:"所有人乱成一团的时候，你是那个还能动手的人。",
+  weak:"什么都自己扛，不肯麻烦别人。",
+  best:"吴定缘",worst:"朱高煦",
+  quote:"「先别慌，把情况说清楚。」",style:"白衬衫 + 直筒裤 + 真丝 + 素色。",color:"#74838F"},
+ "于谦":{line:"你宁可吃亏，也不肯让自己看不起自己。",tags:["正直","轴","理想主义"],stars:4,
+  persona:"正直、轴、有原则。别人劝你“算了吧”，你说“不行”。你知道会得罪人，但你还是说。",
+  high:"所有人都沉默的时候，你开口了。",
+  weak:"太直，容易被人当枪使，也容易孤独。",
+  best:"朱瞻基、张皇后",worst:"汪极",
+  quote:"「此事不妥。」",style:"白衬衫 + 直筒长裤 + 布面鞋 + 少装饰。",color:"#33506B"},
+ "昨叶何":{line:"你把真心藏在最里面，只给值得的人看。",tags:["神秘","生存力","重情"],stars:5,
+  persona:"神秘、能扛、会看人。你不轻易信人，但一旦认了，就是命。",
+  high:"绝境里，你总能找到一条别人看不见的路。",
+  weak:"不敢相信别人，也不敢让别人靠近。",
+  best:"吴定缘",worst:"汪极",
+  quote:"「跟我走，别问。」",style:"黑 + 皮革 + 金属配饰 + 一点异域感。",color:"#3B3247"},
+ "朱高煦":{line:"你不是输不起，你是不甘心。",tags:["野心","强势","不甘"],stars:5,
+  persona:"强势、直接、有野心。你要的东西，你会去抢；你受不了被人安排。",
+  high:"真打起来，你是最有战斗力的那个。",
+  weak:"脾气比耐心快，容易把好牌打烂。",
+  best:"一个能拉住你的人",worst:"于谦",
+  quote:"「凭什么？」",style:"大衣 + 军装元素 + 金属 + 深色。",color:"#8C3A2E"},
+ "张皇后":{line:"你总是先想别人，最后才想自己。",tags:["沉稳","大局","护家"],stars:5,
+  persona:"稳、有大局观、会做人。你看得比别人远，也比别人累。",
+  high:"所有人都在争的时候，你在想怎么收场。",
+  weak:"什么都自己扛，不说累。",
+  best:"郑和、于谦",worst:"朱高煦",
+  quote:"「急什么，先坐下。」",style:"丝绒 + 珍珠 + 剪裁利落的长外套。",color:"#7A2233"},
+ "吴玉露":{line:"你比自己以为的要勇敢。",tags:["温柔","敏感","韧性"],stars:3,
+  persona:"温柔、敏感、心软。你总是先照顾别人的情绪，最后才轮到自己。",
+  high:"看着最软，关键时刻最不肯放手。",
+  weak:"太在意别人怎么想，容易委屈自己。",
+  best:"吴定缘、吴不平",worst:"朱高煦",
+  quote:"「我没事的，你先去忙。」",style:"浅色针织 + 棉麻 + 奶杏色。",color:"#C08B76"},
+ "吴不平":{line:"你话最少，扛得最多。",tags:["沉默","隐忍","可靠"],stars:4,
+  persona:"沉默、隐忍、可靠。你不解释，不抱怨，事情到你这里就结束了。",
+  high:"所有人都不行的时候，你还在。",
+  weak:"什么都不说，别人就以为你什么都不在意。",
+  best:"吴玉露、吴定缘",worst:"汪极",
+  quote:"「放着吧，我来。」",style:"旧夹克 + 布衣 + 洗得发白的牛仔。",color:"#8A7355"},
+ "汪极":{line:"你比谁都清楚规则，也比谁都会用规则。",tags:["精明","务实","城府"],stars:4,
+  persona:"精明、务实、会做人。你不站队，你站“更有利的那边”。",
+  high:"乱局里，你总能全身而退。",
+  weak:"算得太清，最后身边没什么人。",
+  best:"谁都能合作，但谁都不深交",worst:"于谦",
+  quote:"「这事儿，得这么办。」",style:"深色 + 好面料 + 不显眼的标识。",color:"#2E4A3C"},
+ "郑和":{line:"你见过大风大浪，所以不慌。",tags:["格局","稳","见过世面"],stars:5,
+  persona:"稳、有格局、看过世界。你不争一时，你争的是“值不值得”。",
+  high:"所有人都在抢，你在看方向。",
+  weak:"心事藏得深，很少有人真的懂你。",
+  best:"张皇后、朱瞻基",worst:"没有真正合不来的，你只是懒得计较",
+  quote:"「不急，船到桥头。」",style:"深色 + 好质感 + 一点航海元素 + 少而精。",color:"#1F4E5F"},
+ "林不平":{line:"你见不得不平，哪怕吃亏的是自己。",tags:["热血","直","不平则鸣"],stars:4,
+  persona:"直、热、藏不住事。看到不对的，你不上前就难受。",
+  high:"所有人都装没看见的时候，你站出来了。",
+  weak:"太冲，容易被人当枪使。",
+  best:"吴定缘、于谦",worst:"汪极",
+  quote:"「这事儿，我管定了。」",style:"工装 + 运动 + 亮色点缀 + 干净球鞋。",color:"#C0392B"}
+};
+
+var ORDER = ["朱瞻基","吴定缘","苏荆溪","于谦","昨叶何","朱高煦","张皇后","吴玉露","吴不平","汪极","郑和","林不平"];
+
+/* ================= 逻辑 ================= */
+var idx = 0;
+var answers = new Array(QUESTIONS.length).fill(null);
+var current = null;
+
+function $(id){return document.getElementById(id)}
+function show(id){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});
+  $(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function renderQ(){
+  var q = QUESTIONS[idx];
+  $("qnum").textContent = String(idx+1).padStart(2,"0") + " / " + QUESTIONS.length;
+  $("qtext").textContent = q.q;
+  $("bar").style.width = (idx/QUESTIONS.length*100) + "%";
+  $("back").disabled = idx === 0;
+  $("skipHint").style.opacity = answers[idx] === null ? .55 : 0;
+  var box = $("opts");
+  box.innerHTML = "";
+  q.o.forEach(function(opt,i){
+    var b = document.createElement("button");
+    b.className = "opt" + (answers[idx] === i ? " on" : "");
+    b.innerHTML = '<span class="letter">' + "ABCD"[i] + '</span><span class="txt">' + opt[0] + "</span>";
+    b.onclick = function(){ pick(i); };
+    box.appendChild(b);
+  });
+}
+
+function pick(i){
+  answers[idx] = i;
+  document.querySelectorAll(".opt").forEach(function(el,j){
+    el.classList.toggle("on", j === i);
+  });
+  setTimeout(function(){
+    if(idx < QUESTIONS.length - 1){ idx++; renderQ(); }
+    else { finish(); }
+  }, 180);
+}
+
+$("start").onclick = function(){ idx = 0; answers = new Array(QUESTIONS.length).fill(null); renderQ(); show("s-quiz"); };
+$("back").onclick = function(){ if(idx>0){ idx--; renderQ(); } };
+$("again").onclick = function(){ idx = 0; answers = new Array(QUESTIONS.length).fill(null); show("s-intro"); };
+
+function compute(){
+  var cnt = {};
+  ORDER.forEach(function(k){ cnt[k] = 0; });
+  answers.forEach(function(a,i){ if(a !== null) cnt[QUESTIONS[i].o[a][1]]++; });
+  var arr = ORDER.map(function(k){ return {k:k, v:cnt[k]}; })
+                 .sort(function(a,b){ return b.v - a.v || ORDER.indexOf(a.k) - ORDER.indexOf(b.k); });
+  var top = arr[0].v;
+  var tied = arr.filter(function(x){ return x.v === top; }).map(function(x){ return x.k; });
+  var main = tied[0];
+  if(tied.length > 1){
+    [0,8,16].forEach(function(qi){ /* 已在下方处理 */ });
+    for(var n=0; n<3; n++){
+      var qi = [0,8,16][n];
+      var a = answers[qi];
+      if(a === null) continue;
+      var c = QUESTIONS[qi].o[a][1];
+      if(tied.indexOf(c) >= 0){ main = c; break; }
+    }
+  }
+  var second = arr.filter(function(x){ return x.k !== main && x.v > 0; })[0] || null;
+  return {main:main, second:second, count:top, tied:tied.length>1};
+}
+
+function finish(){
+  var r = compute();
+  current = r;
+  var c = CHARS[r.main];
+  $("hero").style.setProperty("--c", c.color);
+  $("rname").textContent = r.main;
+  $("rstars").textContent = "★".repeat(c.stars) + "☆".repeat(5-c.stars);
+  $("rline").textContent = c.line;
+  $("rtags").innerHTML = c.tags.map(function(t){ return '<span class="tag">'+t+"</span>"; }).join("");
+  $("rpersona").textContent = c.persona;
+  $("rhigh").textContent = c.high;
+  $("rweak").textContent = c.weak;
+  $("rbest").textContent = c.best;
+  $("rworst").textContent = c.worst;
+  $("rquote").textContent = c.quote;
+  $("rstyle").textContent = c.style;
+  $("rkicker").textContent = "“" + c.line + "”";
+  if(r.second){
+    $("rsecond").innerHTML = "你的另一面更像 <b>" + r.second.k + "</b><br><span style=\"opacity:.75\">" + CHARS[r.second.k].line + "</span>";
+  } else {
+    $("rsecond").textContent = "";
+  }
+  show("s-result");
+}
+
+$("copy").onclick = function(){
+  if(!current) return;
+  var c = CHARS[current.main];
+  var txt = "我在《两京十五日》角色测试里，测出来是——" + current.main + "\n"
+          + "「" + c.line + "」\n"
+          + "你是哪一个？ " + location.href;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast("已复制，去粘贴吧"); }, function(){ fallbackCopy(txt); });
+  } else { fallbackCopy(txt); }
+};
+function fallbackCopy(txt){
+  var ta = document.createElement("textarea");
+  ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast("已复制"); }catch(e){ toast("复制失败，请手动选择"); }
+  document.body.removeChild(ta);
+}
+function toast(msg){
+  var d = document.createElement("div");
+  d.textContent = msg;
+  d.style.cssText = "position:fixed;left:50%;bottom:38px;transform:translateX(-50%);background:#221E19;color:#F6F0E4;padding:10px 18px;border-radius:99px;font-size:13px;z-index:99";
+  document.body.appendChild(d);
+  setTimeout(function(){ d.style.transition="opacity .4s"; d.style.opacity="0"; }, 1200);
+  setTimeout(function(){ d.remove(); }, 1700);
+}
+
+/* ================= 分享卡 ================= */
+function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+  var line = "";
+  for(var i=0;i<text.length;i++){
+    var ch = text[i];
+    var test = line + ch;
+    if(ctx.measureText(test).width > maxWidth && line){
+      ctx.fillText(line, x, y); line = ch; y += lineHeight;
+    } else { line = test; }
+  }
+  if(line){ ctx.fillText(line, x, y); y += lineHeight; }
+  return y;
+}
+
+$("share").onclick = function(){
+  if(!current) return;
+  var c = CHARS[current.main];
+  var W = 1080, H = 1440;
+  var cv = document.createElement("canvas");
+  cv.width = W; cv.height = H;
+  var ctx = cv.getContext("2d");
+
+  ctx.fillStyle = "#F6F0E4"; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = "rgba(34,30,25,.035)";
+  for(var x=0;x<W;x+=22){ for(var y=0;y<H;y+=22){ ctx.fillRect(x,y,1.4,1.4); } }
+
+  ctx.fillStyle = c.color; ctx.fillRect(0,0,W,14);
+
+  ctx.fillStyle = "#7B7266";
+  ctx.font = '30px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText("《两京十五日》角色测试", 90, 168);
+
+  ctx.fillStyle = "#221E19";
+  ctx.font = 'bold 126px "Songti SC","STSong","SimSun",serif';
+  ctx.fillText(current.main, 86, 356);
+
+  ctx.fillStyle = "#B03A2E";
+  ctx.font = '38px sans-serif';
+  ctx.fillText("★".repeat(c.stars) + "☆".repeat(5-c.stars), 92, 414);
+
+  ctx.fillStyle = c.color; ctx.fillRect(90, 466, 120, 4);
+
+  ctx.fillStyle = "#33291F";
+  ctx.font = '50px "Songti SC","STSong","SimSun",serif';
+  var y = wrapText(ctx, c.line, 90, 566, 880, 74);
+
+  y += 36;
+  ctx.fillStyle = "#7B7266";
+  ctx.font = '30px "PingFang SC","Microsoft YaHei",sans-serif';
+  c.tags.forEach(function(t,i){ ctx.fillText("#" + t, 90 + i*212, y); });
+
+  y += 88;
+  ctx.fillStyle = "#B03A2E";
+  ctx.font = '26px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText("你 的 高 光", 90, y);
+
+  y += 52;
+  ctx.fillStyle = "#3A3027";
+  ctx.font = '40px "PingFang SC","Microsoft YaHei",sans-serif';
+  y = wrapText(ctx, c.high, 90, y, 900, 58);
+
+  y += 44;
+  ctx.fillStyle = "#B03A2E";
+  ctx.font = '26px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText("现 代 版 穿 搭", 90, y);
+
+  y += 52;
+  ctx.fillStyle = "#3A3027";
+  ctx.font = '36px "PingFang SC","Microsoft YaHei",sans-serif';
+  y = wrapText(ctx, c.style, 90, y, 900, 54);
+
+  var divY = Math.max(y + 50, 1150);
+  ctx.strokeStyle = "#DED3C0"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(90, divY); ctx.lineTo(990, divY); ctx.stroke();
+
+  ctx.fillStyle = "#221E19";
+  ctx.font = '40px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText("测测你是哪个角色", 90, divY + 78);
+  ctx.fillStyle = "#7B7266";
+  ctx.font = '26px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText("24 题 · 12 个角色 · 6 分钟", 90, divY + 124);
+  ctx.fillText("同人向娱乐测试 · 非官方", 90, divY + 166);
+
+  var url = cv.toDataURL("image/png");
+  $("cardimg").src = url;
+  $("dl").href = url;
+  $("modal").classList.add("on");
+};
+$("close").onclick = function(){ $("modal").classList.remove("on"); };
+$("modal").onclick = function(e){ if(e.target === $("modal")) $("modal").classList.remove("on"); };
+</script>
+</body>
+</html>
